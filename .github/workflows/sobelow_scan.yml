@@ -1,0 +1,30 @@
+name: Sobelow Scan
+
+on:
+  push:
+    branches:
+      - main   # Replace with your desired branch name
+
+jobs:
+  sobelow_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: '24.x'
+          elixir-version: '1.12.x'
+
+      - name: Install Sobelow
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix archive.install hex sobelow
+
+      - name: Run Sobelow Scan
+        run: mix sobelow --exit
+
