@@ -23,7 +23,7 @@ jobs:
       run: |
         # Run the SBOM generation tool against your repository
         # For example, using CycloneDX:
-        cyclonedx-py --format xml --output-file sbom.xml
+        cyclonedx-py requirements --format=xml --output-file=sbom.xml
 
     - name: Upload SBOM
       uses: actions/upload-artifact@v3
