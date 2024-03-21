@@ -1,30 +1,32 @@
-name: Generate SBOM
+name: SBOM Generation
 
 on:
   push:
     branches: [ main ]
   pull_request:
-  workflow_dispatch:  # Optional: Allow manual triggering
+    branches: [ main ]
 
 jobs:
-  generate_sbom:
+  generate-sbom:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3 
+    - uses: actions/checkout@v3
 
-      - name: Install Syft
-        run: pip install syft
+    - name: Install SBOM Tool
+      run: |
+        # Install the SBOM generation tool here
+        # For example, if using CycloneDX:
+        # pip install cyclonedx-bom
 
-      - name: Generate SBOM (CycloneDX)
-        run: syft packages dir:. -o cyclonedx-json sbom.cdx.json 
-
-      - name: Generate SBOM (SPDX)
-        run: syft packages dir:. -o spdx-json > sbom.spdx.json 
-
-      - name: Upload SBOM Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: sboms
-          path: |
-            sbom.cdx.json
-            sbom.spdx.json 
+    - name: Generate SBOM
+      run: |
+        # Run the SBOM generation tool against your repository
+        # For example, using CycloneDX:
+        # cyclonedx-py -o sbom.xml
+        
+    - name: Upload SBOM
+      uses: actions/upload-artifact@v3
+      with:
+        name: sbom
+        path: sbom.xml
