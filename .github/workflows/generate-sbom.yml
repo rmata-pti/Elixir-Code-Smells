@@ -19,7 +19,7 @@ jobs:
 
     - name: Generate SBOM
       run: |
-        syft . -o sbom.syft.json
+        syft . -o syft-json sbom.syft.json
 
     - name: Upload SBOM
       uses: actions/upload-artifact@v3
