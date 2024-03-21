@@ -17,13 +17,13 @@ jobs:
       run: |
         # Install the SBOM generation tool here
         # For example, if using CycloneDX:
-        # pip install cyclonedx-bom
+        pip install cyclonedx-bom
 
     - name: Generate SBOM
       run: |
         # Run the SBOM generation tool against your repository
         # For example, using CycloneDX:
-        # cyclonedx-py -o sbom.xml
+        cyclonedx-py -o sbom.xml
         
     - name: Upload SBOM
       uses: actions/upload-artifact@v3
