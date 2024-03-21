@@ -2,27 +2,28 @@ name: SBOM Generation
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
-  generate-sbom:
+  generate_sbom:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install Syft
-      run: |
-        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      # Add steps to install and run the SBOM tool (Syft) here
+      - name: Install Syft
+        run: pip install syft
+      
+      - name: Run Syft
+        run: syft -o syft-json sbom.json .
+      
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.json
 
-    - name: Generate SBOM
-      run: |
-        syft . -o syft-json sbom.syft.json
-
-    - name: Upload SBOM
-      uses: actions/upload-artifact@v3
-      with:
-        name: sbom
-        path: sbom.syft.json
