@@ -27,7 +27,7 @@ jobs:
       # Installs the CycloneDX command-line tool globally
 
     - name: Generate SBOM
-      run: npx -p @cyclonedx/bom cyclonedx-bom -o sbom.xml
+      run: npx -p @cyclonedx/bom@4.0.3 cyclonedx-bom -o sbom.xml
       # Uses npx to run the CycloneDX command-line tool directly
       # Runs the CycloneDX tool to generate an SBOM from the project dependencies
       # This assumes your project's dependency manifest is in the root directory
