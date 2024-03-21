@@ -1,41 +1,33 @@
-name: Generate SBOM
+name: SBOM Generation
 
-# This workflow is triggered on pushes and pull requests to the main branch
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  sbom-generation:
+  generate-sbom:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        node-version: '20'
-        # Use the Node.js setup action to install Node.js as CycloneDX CLI requires Node.js
+        python-version: '3.x'
 
-    - name: Install CycloneDX CLI
-      run: npm install -g @cyclonedx/bom
-      # Installs the CycloneDX command-line tool globally
+    - name: Install CycloneDX
+      run: |
+        pip install cyclonedx-bom
 
     - name: Generate SBOM
-      run: npx -p @cyclonedx/bom@4.0.3 cyclonedx-bom -o sbom.xml
-      # Uses npx to run the CycloneDX command-line tool directly
-      # Runs the CycloneDX tool to generate an SBOM from the project dependencies
-      # This assumes your project's dependency manifest is in the root directory
-      # Adjust the command options according to your project's setup
+      run: |
+        cyclonedx-bom --format json --output bom.json
 
-    - name: Upload SBOM as Artifact
-      uses: actions/upload-artifact@v2
+    - name: Upload SBOM
+      uses: actions/upload-artifact@v3
       with:
-        name: SBOM
-        path: sbom.xml
-        # Uploads the generated SBOM as a workflow artifact
+        name: sbom
+        path: bom.json
