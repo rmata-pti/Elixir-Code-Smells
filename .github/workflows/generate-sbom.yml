@@ -19,7 +19,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14'
+        node-version: '20'
         # Use the Node.js setup action to install Node.js as CycloneDX CLI requires Node.js
 
     - name: Install CycloneDX CLI
